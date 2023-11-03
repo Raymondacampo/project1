@@ -10,7 +10,6 @@ def index(request):
     })
 
 def entry(request, name):
-    name = name.upper()
     if name in util.list_entries():
         return render(request, "encyclopedia/entry.html", {
             "entry": name, "content": util.get_entry(name)
