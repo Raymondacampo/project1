@@ -7,7 +7,7 @@ def md_to_html(title):
     content = util.get_entry(title)
     mark = Markdown()
     if content == None:
-        return Null
+        return None
     else:
         return mark.convert(content)
 
@@ -31,4 +31,11 @@ def search(request):
                 "entry": t, "content": search_content
             })
         else:
-            raise Http404
+            p = []
+            for entry in util.list_entries():
+                if t.lower() in entry.lower():
+                    p.append(entry)
+
+            return render(request, 'encyclopedia/options.html', {
+            "possibilities": p
+            })
