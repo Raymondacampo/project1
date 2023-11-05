@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from . import util
 from markdown2 import Markdown
-# from django.urls import reverse
+import random
 
 def md_to_html(title):
     content = util.get_entry(title)
@@ -64,4 +64,8 @@ def edit(request, doc):
         'doc':doc, 'cont':util.get_entry(doc)
     })
 
-    
+def random_page(request):
+    entry = random.choice(util.list_entries())
+    return render(request, 'encyclopedia/entry.html', {
+        "entry": entry, "content": md_to_html(entry)
+    })
