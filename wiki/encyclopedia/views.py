@@ -49,6 +49,19 @@ def new(request):
             return render(request, "encyclopedia/entry.html", {
                 "entry": ti, "content": md_to_html(ti)
             })
-        else:
-            return render(request, 'encyclopedia/new.html')
+    else:
+        return render(request, 'encyclopedia/new.html')
+
+def edit(request, doc):
+    if request.method =='POST':
+        con = request.POST['q']
+        util.save_entry(doc, con)
+        return render(request, 'encyclopedia/entry.html', {
+            "entry": doc, "content": md_to_html(doc)
+        })
+        
+    return render(request, 'encyclopedia/edit.html', {
+        'doc':doc, 'cont':util.get_entry(doc)
+    })
+
     
