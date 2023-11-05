@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import Http404
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from . import util
 from markdown2 import Markdown
+# from django.urls import reverse
 
 def md_to_html(title):
     content = util.get_entry(title)
@@ -39,3 +40,15 @@ def search(request):
             return render(request, 'encyclopedia/options.html', {
             "possibilities": p
             })
+
+def new(request):
+    if request.method =='POST':
+        ti, con = request.POST['page'].split(' ', 1)
+        if ti not in util.list_entries():
+            util.save_entry(ti, con)
+            return render(request, "encyclopedia/entry.html", {
+                "entry": ti, "content": md_to_html(ti)
+            })
+        else:
+            return render(request, 'encyclopedia/new.html')
+    
